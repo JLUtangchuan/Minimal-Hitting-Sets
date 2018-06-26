@@ -1,13 +1,14 @@
-observations = []
+import itertools
+
+all_observations = []
 sender_observations = []
 HS = []
-
 
 def read_data():
     data_file = open("observation_mix.txt", "r")
     for line in data_file:
-        removedcolon = line.replace(":", "").replace("  ", " ")
-        value1, value2, value3, value4, value5, value6, value7, value8, value9 = removedcolon.split(" ")
+        removed_colon = line.replace(":", "").replace("  ", " ")
+        value1, value2, value3, value4, value5, value6, value7, value8, value9 = removed_colon.split(" ")
         value1 = int(value1)
         value2 = int(value2)
         value3 = int(value3)
@@ -19,12 +20,12 @@ def read_data():
         sender_set = [value1, value2, value3, value4]
         receiver_set = [value5, value6, value7, value8]
         observation = [sender_set, receiver_set]
-        observations.append(observation)
+        all_observations.append(observation)
     data_file.close()
 
 
 def return_observations_with_specific_sender(sender):
-    for observation in observations:
+    for observation in all_observations:
         if sender in observation[0]:
             sender_observations.append(observation[1])
 
@@ -44,13 +45,16 @@ def exact_hs(KB, m, C):
             print(index_of_observation)
 
 
-
 def get_subset_of_observations_without_r(superset, r):
     subset = []
     for observation in superset:
         if r not in observation:
             subset.append(observation)
     return subset
+
+
+def remove_duplicates_from_mhs(minimal_hitting_sets):
+    return list(minimal_hitting_sets for minimal_hitting_sets, _ in itertools.groupby(minimal_hitting_sets))
 
 
 def start_hs_attack():
@@ -60,12 +64,11 @@ def start_hs_attack():
     while not HS:
         exact_hs(KB, m, [])
         m = m + 1
-
+    HS = remove_duplicates_from_mhs(HS)
     print(HS)
 
 
 read_data()
 return_observations_with_specific_sender(10)
-list1 = [[1, 2, 3], [4, 5, 6], [1, 5, 8]]
 start_hs_attack()
 
