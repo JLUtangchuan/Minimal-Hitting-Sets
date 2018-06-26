@@ -84,9 +84,9 @@ def start_hs_attack():
             m = m + 1
         sort_mhs()
         HS = remove_duplicates_from_mhs(HS)
-        print("Minimal Hitting Set for Sender " + str(i) + " (m = " + str(m-1) + ")" + ": " + str(HS))
+        print("Minimal Hitting Set for Sender " + str(i) + " (m = " + str(m - 1) + ")" + ": " + str(HS))
+
 
 # Funktionsaufrufe
 read_data()
 start_hs_attack()
-
